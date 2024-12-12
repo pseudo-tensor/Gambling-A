@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String      @id @default(uuid()) // Primary key with UUID
+  username       String // Maps to "Username" column
+  email          String // Maps to "Email" column
+  password       String // Maps to "Password" column
+  ownedSkins     SkinOwned[] // Relation to "Skin (owned)"
+  ownedCases     CaseOwned[] // Relation to "Case (owned)"
+  inventoryValue Float // Maps to "Inventory Value" column
+  accountBalance Float // Maps to "Account Balance" column
+  field          String // Maps to "Field" column
+
+  @@index([username, email, password, inventoryValue, accountBalance, field]) // Composite index
+}
+
+model SkinMaster {
+  id           String      @id @default(uuid()) // Primary key with UUID
+  name         String // Maps to "Name" column
+  collection   String // Maps to "Collection" column
+  rarity       String // Maps to "Rarity" column
+  type         String // Maps to "Type" column
+  currentPrice Float // Maps to "Current Price" column
+  image        String // Maps to "Image" column
+  stattrak     Boolean // Maps to "Stattrak" column
+  SkinOwned    SkinOwned[]
+
+  @@index([id, name, collection, rarity, type, currentPrice, image, stattrak]) // Composite index
+}
+
+model CaseMaster {
+  id           String      @id @default(uuid()) // Primary key with UUID
+  name         String // Maps to "Name" column
+  skins        String // Maps to "Skins" column
+  currentPrice Float // Maps to "Current Price" column
+  image        String // Maps to "Image" column
+  CaseOwned    CaseOwned[]
+
+  @@index([id, name, skins, currentPrice, image]) // Composite index
+}
+
+model SkinOwned {
+  id      String     @id @default(uuid()) // Primary key with UUID
+  skinId  String // Foreign key referencing SkinMaster
+  float   Float // Maps to "Float" column
+  pattern String // Maps to "Pattern" column
+  skin    SkinMaster @relation(fields: [skinId], references: [id]) // Relation to SkinMaster
+  userId  String // Foreign key referencing User
+  user    User       @relation(fields: [userId], references: [id]) // Relation to User
+
+  @@index([id, skinId, float, pattern]) // Composite index
+}
+
+model CaseOwned {
+  id     String     @id @default(uuid()) // Primary key with UUID
+  caseId String // Foreign key referencing CaseMaster
+  userId String // Foreign key referencing User
+  case   CaseMaster @relation(fields: [caseId], references: [id]) // Relation to CaseMaster
+  user   User       @relation(fields: [userId], references: [id]) // Relation to User
+
+  @@index([id, caseId, userId]) // Composite index
+}
