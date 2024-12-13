@@ -4,4 +4,10 @@
     border-radius: 45px;
     color: white;
     padding: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
 }
+
+.Sort-Button:hover {
+    transform: scale(1.1); /* Scales the button to 110% of its original size */
+  }

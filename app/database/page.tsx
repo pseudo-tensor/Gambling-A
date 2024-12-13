@@ -7,7 +7,7 @@ export default function page() {
     <div>
         <Navbar />
         <div className='flex'>
-            <div className='h-[1250px] w-[250px] bg-[#222831] flex-row align-middle justify-center'>
+            <div className='h-[700px] w-[250px] bg-[#31363F] flex-row align-middle justify-center mx-4 my-4 rounded-lg'>
                 <h1 className='text-white text-center mt-3'>Sort By</h1>
                 <div className='h-[40px] grid align-middle justify-centre'>
                     <button className='Sort-Button'>Collection</button>
@@ -16,7 +16,7 @@ export default function page() {
                 </div>
             </div>
             <div className='flex'>
-                <h1>Skins</h1></div>
+                <h1 className='text-center'>Skins</h1></div>
             </div>
     </div>
   )
